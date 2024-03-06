@@ -1,31 +1,39 @@
 package br.com.versao2.Academia.entitys;
 
+import br.com.versao2.Academia.DTO.PlanoDTO;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+
 public class Plano {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPlano;
-    private String nome;
+    private String nomePlano;
     private double valor;
-    private LocalDateTime dataCadastro;
+    //private LocalDateTime dataCadastro;
 
     @OneToMany(mappedBy = "plano")
-    private List<Users> users = new ArrayList<>();
+    private List<Aluno> aluno = new ArrayList<>();
 
     public Plano() {
     }
 
-    public Plano(Long idPlano, String nome, double valor, LocalDateTime dataCadastro) {
+    public Plano(Long idPlano, String nomePlano, double valor) {
         this.idPlano = idPlano;
-        this.nome = nome;
+        this.nomePlano = nomePlano;
         this.valor = valor;
-        this.dataCadastro = dataCadastro;
+
+    }
+
+    public Plano(PlanoDTO planoDTO) {
+        this.idPlano = getIdPlano();
+        this.nomePlano = getNomePlano();
+        this.valor = getValor();
     }
 
     public Long getIdPlano() {
@@ -36,12 +44,12 @@ public class Plano {
         this.idPlano = idPlano;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomePlano() {
+        return nomePlano;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomePlano(String nomePlano) {
+        this.nomePlano = nomePlano;
     }
 
     public double getValor() {
@@ -52,19 +60,13 @@ public class Plano {
         this.valor = valor;
     }
 
-    public LocalDateTime getDataCadastro() {
-        return dataCadastro;
+    public List<Aluno> getAluno() {
+        return aluno;
     }
 
-    public void setDataCadastro(LocalDateTime dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public List<Users> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<Users> users) {
-        this.users = users;
+    public void setAluno(List<Aluno> aluno) {
+        this.aluno = aluno;
     }
 }
+
+

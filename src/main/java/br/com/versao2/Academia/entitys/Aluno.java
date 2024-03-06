@@ -2,34 +2,39 @@ package br.com.versao2.Academia.entitys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import org.apache.catalina.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 
-public class Users implements UserDetails {
+public class Aluno implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAluno;
-    private String login;
+    private String nome;
+    private LocalDateTime dataCadastro;
     private String cpf;
     private String telefone;
     private String endereco;
     private String password;
     public UserRole role;
+
     @ManyToOne
     @JoinColumn(name = "ID_PLANO")
     private Plano plano;
 
-    public Users() {
+    public Aluno() {
     }
 
-    public Users(Long idAluno, String login, String cpf, String telefone, String endereco, String password, UserRole role, Plano plano) {
+    public Aluno(Long idAluno, String nome, LocalDateTime dataCadastro, String cpf, String telefone, String endereco, String password, UserRole role, Plano plano) {
         this.idAluno = idAluno;
-        this.login = login;
+        this.nome = nome;
+        this.dataCadastro = dataCadastro;
         this.cpf = cpf;
         this.telefone = telefone;
         this.endereco = endereco;
@@ -37,6 +42,13 @@ public class Users implements UserDetails {
         this.plano = plano;
         this.role = role;
     }
+
+    public Aluno(String nome, String password, UserRole role) {
+        this.nome = nome;
+        this.password = password;
+        this.role = role;
+    }
+
     @JsonIgnore
     public Plano getPlano() {
         return plano;
@@ -48,7 +60,8 @@ public class Users implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        if (this.role == UserRole.ADMIN) return List.of( new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_ALUNO"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_ALUNO"));
     }
 
     @Override
@@ -58,7 +71,7 @@ public class Users implements UserDetails {
 
     @Override
     public String getUsername() {
-        return login;
+        return nome;
     }
 
     @Override
@@ -89,12 +102,12 @@ public class Users implements UserDetails {
         this.idAluno = idAluno;
     }
 
-    public String getLogin() {
-        return login;
+    public String getNome() {
+        return nome;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getCpf() {
@@ -133,5 +146,11 @@ public class Users implements UserDetails {
         this.role = role;
     }
 
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
+    }
 
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
 }

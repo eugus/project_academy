@@ -3,7 +3,7 @@ package br.com.versao2.Academia.entitys;
 public enum UserRole {
 
     ADMIN("admin"),
-    USER("user");
+    USER("aluno");
 
     private String role;
 
