@@ -3,7 +3,9 @@ package br.com.versao2.Academia.controller;
 import br.com.versao2.Academia.DTO.PlanoDTO;
 import br.com.versao2.Academia.entitys.Plano;
 import br.com.versao2.Academia.repository.PlanoRepository;
+import br.com.versao2.Academia.service.PlanoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,24 +15,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/plano")
 
-public class PlanoControllerTeste {
+public class PlanoController {
     @Autowired
-    private PlanoRepository planoRepository;
+    private PlanoService planoService;
 
 
     @PostMapping()
-    public ResponseEntity post(@RequestBody @Valid  PlanoDTO planoDTO){
-        Plano plano1 = new Plano(planoDTO);
-
-        planoRepository.save(plano1);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PlanoDTO> post(@RequestBody @Valid  PlanoDTO planoDTO){
+        planoService.criarPlano(planoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(planoDTO);
     }
 
 
 
     @GetMapping()
-    public ResponseEntity post(){
-        List<Plano> planoList = planoRepository.findAll();
-        return ResponseEntity.ok().body(planoList);
+    public ResponseEntity<List<Plano>> post(){
+        var retornar = planoService.get();
+        return ResponseEntity.ok().body(retornar);
     }
 }

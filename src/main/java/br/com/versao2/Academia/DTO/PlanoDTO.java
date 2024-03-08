@@ -5,7 +5,6 @@ import br.com.versao2.Academia.entitys.Plano;
 public class PlanoDTO {
 
     private Long idPlano;
-
     private String nomePlano;
 
     public PlanoDTO(Plano plano){

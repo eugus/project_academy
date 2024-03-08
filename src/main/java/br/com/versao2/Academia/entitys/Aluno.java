@@ -34,7 +34,7 @@ public class Aluno implements UserDetails {
     public Aluno(Long idAluno, String nome, LocalDateTime dataCadastro, String cpf, String telefone, String endereco, String password, UserRole role, Plano plano) {
         this.idAluno = idAluno;
         this.nome = nome;
-        this.dataCadastro = dataCadastro;
+        this.dataCadastro = dataCadastro = LocalDateTime.now();
         this.cpf = cpf;
         this.telefone = telefone;
         this.endereco = endereco;
@@ -43,10 +43,14 @@ public class Aluno implements UserDetails {
         this.role = role;
     }
 
-    public Aluno(String nome, String password, UserRole role) {
+
+    public Aluno(String nome, String encryptedPassword, UserRole role, String cpf, String telefone, String endereco) {
         this.nome = nome;
-        this.password = password;
+        this.password = encryptedPassword;
         this.role = role;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.endereco = endereco;
     }
 
     @JsonIgnore
@@ -57,6 +61,8 @@ public class Aluno implements UserDetails {
     public void setPlano(Plano plano) {
         this.plano = plano;
     }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -74,21 +80,27 @@ public class Aluno implements UserDetails {
         return nome;
     }
 
+
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;
@@ -152,5 +164,20 @@ public class Aluno implements UserDetails {
 
     public void setDataCadastro(LocalDateTime dataCadastro) {
         this.dataCadastro = dataCadastro;
+    }
+
+    @Override
+    public String toString() {
+        return "Aluno{" +
+                "idAluno=" + idAluno +
+                ", nome='" + nome + '\'' +
+                ", dataCadastro=" + dataCadastro +
+                ", cpf='" + cpf + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", plano=" + plano +
+                '}';
     }
 }
