@@ -44,9 +44,10 @@ public class Aluno implements UserDetails {
     }
 
 
-    public Aluno(String nome, String encryptedPassword, UserRole role, String cpf, String telefone, String endereco) {
+    public Aluno(String nome, String encryptedPassword, UserRole role, String cpf, String telefone, String endereco, LocalDateTime dataCadastro) {
         this.nome = nome;
         this.password = encryptedPassword;
+        this.dataCadastro = dataCadastro = LocalDateTime.now();
         this.role = role;
         this.cpf = cpf;
         this.telefone = telefone;

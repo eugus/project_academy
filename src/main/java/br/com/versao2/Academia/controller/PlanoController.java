@@ -26,8 +26,6 @@ public class PlanoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(planoDTO);
     }
 
-
-
     @GetMapping()
     public ResponseEntity<List<Plano>> post(){
         var retornar = planoService.get();

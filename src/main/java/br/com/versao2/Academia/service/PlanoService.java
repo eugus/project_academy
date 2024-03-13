@@ -19,12 +19,11 @@ public class PlanoService {
        return planoRepository.findAll();
     }
 
-
     public PlanoDTO criarPlano(PlanoDTO planoDTO){
         Plano entity = new Plano();
         entity.setIdPlano(planoDTO.getIdPlano());
         entity.setNomePlano(planoDTO.getNomePlano());
-
+        entity.setValor(planoDTO.getValor());
 
         Plano dto = planoRepository.save(entity);
         planoDTO.setIdPlano(dto.getIdPlano());
