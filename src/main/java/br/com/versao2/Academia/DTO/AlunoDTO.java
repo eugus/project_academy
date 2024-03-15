@@ -24,19 +24,20 @@ public class AlunoDTO {
         dataCadastro = aluno.getDataCadastro();
         cpf = aluno.getCpf();
         telefone = aluno.getTelefone();
-        endereco = aluno.getPassword();
+        endereco = aluno.getEndereco();
+        password = aluno.getPassword();
         role = aluno.getRole();
-        idPlano = getIdPlano();
+        idPlano = aluno.getPlano().getIdPlano();
     }
 
-    public AlunoDTO(Long idAluno, String nome, LocalDateTime dataCadastro, String cpf, String telefone, String endereco, String password, UserRole role, Long idPlano) {
+    public AlunoDTO(Long idAluno, String nome, LocalDateTime dataCadastro, String cpf, String telefone, String endereco, String encryptedPassword, UserRole role, Long idPlano) {
         this.idAluno = idAluno;
         this.nome = nome;
         this.dataCadastro = dataCadastro = LocalDateTime.now();
         this.cpf = cpf;
         this.telefone = telefone;
         this.endereco = endereco;
-        this.password = password;
+        this.password = encryptedPassword;
         this.role = role;
         this.idPlano = idPlano;
     }

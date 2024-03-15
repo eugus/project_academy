@@ -31,20 +31,20 @@ public class Aluno implements UserDetails {
     public Aluno() {
     }
 
-    public Aluno(Long idAluno, String nome, LocalDateTime dataCadastro, String cpf, String telefone, String endereco, String password, UserRole role, Plano plano) {
+    public Aluno(Long idAluno, String nome, String encryptedPassword, UserRole role, String cpf,LocalDateTime dataCadastro, String telefone, String endereco, Plano plano) {
         this.idAluno = idAluno;
         this.nome = nome;
-        this.dataCadastro = dataCadastro = LocalDateTime.now();
         this.cpf = cpf;
-        this.telefone = telefone;
         this.endereco = endereco;
-        this.password = password;
-        this.plano = plano;
+        this.password = encryptedPassword;
+        this.dataCadastro = dataCadastro = LocalDateTime.now();
         this.role = role;
+        this.telefone = telefone;
+        this.plano = plano;
     }
 
-
-    public Aluno(String nome, String encryptedPassword, UserRole role, String cpf, String telefone, String endereco, LocalDateTime dataCadastro) {
+    /*public Aluno(Long idAluno, String nome, String encryptedPassword, UserRole role, String cpf, String telefone, String endereco, LocalDateTime dataCadastro, Plano plano) {
+        this.idAluno = idAluno;
         this.nome = nome;
         this.password = encryptedPassword;
         this.dataCadastro = dataCadastro = LocalDateTime.now();
@@ -52,7 +52,10 @@ public class Aluno implements UserDetails {
         this.cpf = cpf;
         this.telefone = telefone;
         this.endereco = endereco;
+        this.plano = plano;
     }
+
+     */
 
     @JsonIgnore
     public Plano getPlano() {

@@ -1,11 +1,10 @@
 package br.com.versao2.Academia.controller;
 
-import br.com.versao2.Academia.DTO.AuthenticationDTO;
-import br.com.versao2.Academia.DTO.LoginResponseDTO;
-import br.com.versao2.Academia.DTO.RegisterDTO;
+import br.com.versao2.Academia.DTO.*;
 import br.com.versao2.Academia.entitys.Aluno;
 import br.com.versao2.Academia.infra.security.TokenService;
 import br.com.versao2.Academia.repository.AlunoRepository;
+import br.com.versao2.Academia.service.AlunoService;
 import br.com.versao2.Academia.service.ForbiddenExeception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +24,8 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
-
+    @Autowired
+    AlunoService alunoService;
 
     @Autowired
     TokenService service;
@@ -56,23 +56,24 @@ public class AuthenticationController {
         return ResponseEntity.ok(new LoginResponseDTO(token));
 
          */
-
-
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO dto){
+    public ResponseEntity<?> register(@RequestBody @Valid AlunoDTO dto){
 
         //caso exista um usuário com esse nome
-        if (repository.findByNome(dto.nome()) != null){
+        if (repository.findByNome(dto.getNome()) != null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já existe");
         }
-        var encryptedPassword = new BCryptPasswordEncoder().encode(dto.password());
-        Aluno newAluno = new Aluno(dto.nome(), encryptedPassword, dto.role(), dto.cpf(), dto.telefone(), dto.endereco(), dto.dataCadastro());
+        var encryptedPassword = new BCryptPasswordEncoder().encode(dto.getPassword());
 
-        repository.save(newAluno);
+        AlunoDTO newAlunoDto = new AlunoDTO(dto.getIdAluno(), dto.getNome(),
+                dto.getDataCadastro(), dto.getCpf(), dto.getTelefone(),
+                dto.getEndereco(), encryptedPassword,dto.getRole(), dto.getIdPlano());
 
-        return ResponseEntity.ok().build();
+        alunoService.criarAluno(newAlunoDto);
+
+        return ResponseEntity.ok().body("Aluno criado com sucesso! Seja bem-vindo, " + dto.getNome());
 
     }
 }

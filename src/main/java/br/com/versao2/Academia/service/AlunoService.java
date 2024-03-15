@@ -42,7 +42,6 @@ public class AlunoService {
 
     Aluno dto = alunoRepository.save(entity);
     alunoDto.setIdAluno(dto.getIdAluno());
-
     return alunoDto;
     }
 

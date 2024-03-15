@@ -3,12 +3,13 @@ package br.com.versao2.Academia.entitys;
 import br.com.versao2.Academia.DTO.PlanoDTO;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 
-public class Plano {
+public class Plano implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,9 +65,7 @@ public class Plano {
         return aluno;
     }
 
-    public void setAluno(List<Aluno> aluno) {
-        this.aluno = aluno;
-    }
+
 }
 
 
