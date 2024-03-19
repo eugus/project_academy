@@ -57,5 +57,11 @@ public class PlanoService {
     }
 
 
+    public void deletePlan(Long codigoPlano){
+        planoRepository.deleteById(codigoPlano);
+    }
+
+
+
 
 }

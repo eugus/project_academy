@@ -51,10 +51,20 @@ public class PlanoController {
         return ResponseEntity.status(HttpStatus.OK).body(plano);
     }
 
-    @DeleteMapping("/{codigoPlano}")
+    /*@DeleteMapping("/{codigoPlano}")
     public ResponseEntity exluir(@PathVariable Long codigoPlano){
         planoService.delete(codigoPlano);
         return ResponseEntity.status(HttpStatus.OK).body("Excluído");
     }
+
+     */
+
+
+    @DeleteMapping("{codigoPlano}")
+    public ResponseEntity excluir2(@PathVariable Long codigoPlano){
+        planoService.deletePlan(codigoPlano);
+        return ResponseEntity.ok().body("ok");
+    }
+
 
 }
