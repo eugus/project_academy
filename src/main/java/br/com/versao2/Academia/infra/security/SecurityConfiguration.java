@@ -1,7 +1,6 @@
 package br.com.versao2.Academia.infra.security;
 
 
-import br.com.versao2.Academia.service.ForbiddenExeception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,6 +40,11 @@ public class SecurityConfiguration {
                             .requestMatchers(HttpMethod.GET, "/aluno").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.POST, "/plano").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.GET, "/plano").permitAll()
+                            .requestMatchers(HttpMethod.PUT, "/aluno/{idAluno}").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/plano/{codigoPlano}").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.GET, "/aluno/{idPlano}").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/aluno/{idAluno}").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/plano/{codigoPlano}").hasRole("ADMIN")
 
                             //p/ as demais requisições apenas seja autenticado independente da role
                             //usuario ta logado? se nao retorna erro

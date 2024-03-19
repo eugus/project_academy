@@ -2,19 +2,19 @@ package br.com.versao2.Academia.DTO;
 
 import br.com.versao2.Academia.entitys.Plano;
 
-public class PlanoDTO {
+public class PlanDTO {
 
     private Long codigoPlano;
     private String nomePlano;
     private double valor;
 
-    public PlanoDTO(Plano plano){
+    public PlanDTO(Plano plano){
         codigoPlano = plano.getCodigoPlano();
         nomePlano = plano.getNomePlano();
         valor = plano.getValor();
     }
 
-    public PlanoDTO(Long codigoPlano, String nomePlano, double valor) {
+    public PlanDTO(Long codigoPlano, String nomePlano, double valor) {
         this.codigoPlano = codigoPlano;
         this.nomePlano = nomePlano;
         this.valor = valor;

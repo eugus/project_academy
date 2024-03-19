@@ -5,9 +5,7 @@ import br.com.versao2.Academia.entitys.Aluno;
 import br.com.versao2.Academia.infra.security.TokenService;
 import br.com.versao2.Academia.repository.AlunoRepository;
 import br.com.versao2.Academia.service.AlunoService;
-import br.com.versao2.Academia.service.ForbiddenExeception;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -69,7 +67,7 @@ public class AuthenticationController {
 
         AlunoDTO newAlunoDto = new AlunoDTO(dto.getIdAluno(), dto.getNome(),
                 dto.getDataCadastro(), dto.getCpf(), dto.getTelefone(),
-                dto.getEndereco(), encryptedPassword,dto.getRole(), dto.getIdPlano());
+                dto.getEndereco(), encryptedPassword,dto.getRole(), dto.getCodigoPlano());
 
         alunoService.criarAluno(newAlunoDto);
 

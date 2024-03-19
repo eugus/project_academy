@@ -16,9 +16,9 @@ public class AlunoDTO {
     private String endereco;
     private String password;
     public UserRole role;
-    private Long idPlano;
+    private Long codigoPlano;
 
-    public AlunoDTO(Aluno aluno){
+    public AlunoDTO(Aluno aluno) {
         idAluno = aluno.getIdAluno();
         nome = aluno.getNome();
         dataCadastro = aluno.getDataCadastro();
@@ -27,10 +27,10 @@ public class AlunoDTO {
         endereco = aluno.getEndereco();
         password = aluno.getPassword();
         role = aluno.getRole();
-        idPlano = aluno.getPlano().getIdPlano();
+        codigoPlano = aluno.getPlano().getCodigoPlano();
     }
 
-    public AlunoDTO(Long idAluno, String nome, LocalDateTime dataCadastro, String cpf, String telefone, String endereco, String encryptedPassword, UserRole role, Long idPlano) {
+    public AlunoDTO(Long idAluno, String nome, LocalDateTime dataCadastro, String cpf, String telefone, String endereco, String encryptedPassword, UserRole role, Long codigoPlano) {
         this.idAluno = idAluno;
         this.nome = nome;
         this.dataCadastro = dataCadastro = LocalDateTime.now();
@@ -39,15 +39,7 @@ public class AlunoDTO {
         this.endereco = endereco;
         this.password = encryptedPassword;
         this.role = role;
-        this.idPlano = idPlano;
-    }
-
-    public Long getIdPlano() {
-        return idPlano;
-    }
-
-    public void setIdPlano(Long idPlano) {
-        this.idPlano = idPlano;
+        this.codigoPlano = codigoPlano;
     }
 
     public Long getIdAluno() {
@@ -113,4 +105,20 @@ public class AlunoDTO {
     public void setRole(UserRole role) {
         this.role = role;
     }
+
+    public Long getCodigoPlano() {
+        return codigoPlano;
+    }
+
+    public void setCodigoPlano(Long codigoPlano) {
+        this.codigoPlano = codigoPlano;
+    }
 }
+
+
+
+
+
+
+
+

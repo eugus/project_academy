@@ -1,6 +1,5 @@
-package br.com.versao2.Academia.exceptions;
+package br.com.versao2.Academia.exceptions.manipuladas;
 
-import br.com.versao2.Academia.entitys.ErroResponse;
 import br.com.versao2.Academia.service.ForbiddenExeception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +20,15 @@ public class ResourceExceptionHandler {
 
      */
 
-    @ExceptionHandler(ForbiddenExeception.class)
-    public ResponseEntity<StandardErro> UnableToCreateAluno(ForbiddenExeception e, WebRequest request){
-        StandardErro erro = new StandardErro();
-        erro.setTimestamp(Instant.now());
-        erro.setStatus(String.valueOf(HttpStatus.BAD_REQUEST.value()));
-        erro.setError("teste");
-        erro.setMessage(e.getMessage());
-        erro.setPath(request.getDescription(false));
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+    @ExceptionHandler(IdNotFound.class)
+    public ResponseEntity<StandardErro> UnableToCreateAluno(IdNotFound e, WebRequest request){
+        StandardErro error = new StandardErro();
+        error.setTimestamp(Instant.now());
+        error.setStatus(String.valueOf(HttpStatus.BAD_REQUEST.value()));
+        error.setError("ERRO!");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getDescription(false));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
 

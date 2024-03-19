@@ -1,7 +1,9 @@
 package br.com.versao2.Academia.controller;
 
+import br.com.versao2.Academia.DTO.PlanDTO;
 import br.com.versao2.Academia.DTO.PlanoDTO;
 import br.com.versao2.Academia.entitys.Plano;
+import br.com.versao2.Academia.entitys.ResponseMessage;
 import br.com.versao2.Academia.repository.PlanoRepository;
 import br.com.versao2.Academia.service.PlanoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +23,38 @@ public class PlanoController {
 
 
     @PostMapping()
-    public ResponseEntity<PlanoDTO> post(@RequestBody @Valid  PlanoDTO planoDTO){
+    public ResponseEntity<ResponseMessage> post(@RequestBody @Valid PlanDTO planoDTO){
         planoService.criarPlano(planoDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(planoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                new ResponseMessage("Plano adcionado ao sistema"));
     }
 
     @GetMapping()
     public ResponseEntity<List<Plano>> post(){
-        var retornar = planoService.get();
-        return ResponseEntity.ok().body(retornar);
+        var listPlano = planoService.get();
+        return ResponseEntity.ok().body(listPlano);
     }
+
+
+
+    @PutMapping("/{codigoPlano}")
+    public ResponseEntity<ResponseMessage> atualizar(@RequestBody PlanDTO planoDTO, @PathVariable  Long codigoPlano){
+        planoService.update(planoDTO, codigoPlano);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseMessage("Dados alterados com sucesso"));
+    }
+
+
+    @GetMapping("{codigoPlano}")
+    public ResponseEntity<Plano> getId(@PathVariable Long codigoPlano){
+        Plano plano = planoService.getPlano(codigoPlano);
+        return ResponseEntity.status(HttpStatus.OK).body(plano);
+    }
+
+    @DeleteMapping("/{codigoPlano}")
+    public ResponseEntity exluir(@PathVariable Long codigoPlano){
+        planoService.delete(codigoPlano);
+        return ResponseEntity.status(HttpStatus.OK).body("Excluído");
+    }
+
 }

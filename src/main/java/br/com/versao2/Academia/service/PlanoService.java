@@ -1,7 +1,9 @@
 package br.com.versao2.Academia.service;
 
+import br.com.versao2.Academia.DTO.PlanDTO;
 import br.com.versao2.Academia.DTO.PlanoDTO;
 import br.com.versao2.Academia.entitys.Plano;
+import br.com.versao2.Academia.exceptions.manipuladas.IdNotFound;
 import br.com.versao2.Academia.repository.PlanoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,15 +21,41 @@ public class PlanoService {
        return planoRepository.findAll();
     }
 
-    public PlanoDTO criarPlano(PlanoDTO planoDTO){
+    public PlanDTO criarPlano(PlanDTO planoDTO){
         Plano entity = new Plano();
-        entity.setIdPlano(planoDTO.getIdPlano());
+        entity.setCodigoPlano(planoDTO.getCodigoPlano());
         entity.setNomePlano(planoDTO.getNomePlano());
         entity.setValor(planoDTO.getValor());
 
         Plano dto = planoRepository.save(entity);
-        planoDTO.setIdPlano(dto.getIdPlano());
+        planoDTO.setCodigoPlano(dto.getCodigoPlano());
         return planoDTO;
     }
+
+    public PlanDTO update(PlanDTO planoDTO, Long codigoPlano){
+        Plano entity = planoRepository.getReferenceById(codigoPlano);
+        entity.setNomePlano(planoDTO.getNomePlano());
+        entity.setValor(planoDTO.getValor());
+
+        Plano dto = planoRepository.save(entity);
+        planoDTO.setCodigoPlano(dto.getCodigoPlano());
+        return planoDTO;
+    }
+
+    public Plano getPlano(Long codigoPlano){
+        return planoRepository.findById(codigoPlano).orElseThrow(
+                ()-> new IdNotFound("ID não encontrado"));
+    }
+
+
+    public void delete(Long codigoPlano){
+        if (planoRepository.existsById(codigoPlano)){
+            planoRepository.deleteById(codigoPlano);
+        }else {
+            throw new IdNotFound("ID não encontrado");
+        }
+    }
+
+
 
 }

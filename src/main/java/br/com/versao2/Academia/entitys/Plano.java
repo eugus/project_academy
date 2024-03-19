@@ -1,5 +1,6 @@
 package br.com.versao2.Academia.entitys;
 
+import br.com.versao2.Academia.DTO.PlanDTO;
 import br.com.versao2.Academia.DTO.PlanoDTO;
 import jakarta.persistence.*;
 
@@ -8,12 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-
 public class Plano implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPlano;
+    private Long codigoPlano;
     private String nomePlano;
     private double valor;
     //private LocalDateTime dataCadastro;
@@ -24,25 +24,19 @@ public class Plano implements Serializable {
     public Plano() {
     }
 
-    public Plano(Long idPlano, String nomePlano, double valor) {
-        this.idPlano = idPlano;
+    public Plano(Long codigoPlano, String nomePlano, double valor) {
+        this.codigoPlano = codigoPlano;
         this.nomePlano = nomePlano;
         this.valor = valor;
-
     }
 
-    public Plano(PlanoDTO planoDTO) {
-        this.idPlano = getIdPlano();
-        this.nomePlano = getNomePlano();
-        this.valor = getValor();
+
+    public Long getCodigoPlano() {
+        return codigoPlano;
     }
 
-    public Long getIdPlano() {
-        return idPlano;
-    }
-
-    public void setIdPlano(Long idPlano) {
-        this.idPlano = idPlano;
+    public void setCodigoPlano(Long codigoPlano) {
+        this.codigoPlano = codigoPlano;
     }
 
     public String getNomePlano() {

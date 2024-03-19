@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-
 public class Aluno implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +36,7 @@ public class Aluno implements UserDetails {
         this.cpf = cpf;
         this.endereco = endereco;
         this.password = encryptedPassword;
-        this.dataCadastro = dataCadastro = LocalDateTime.now();
+        this.dataCadastro = dataCadastro;
         this.role = role;
         this.telefone = telefone;
         this.plano = plano;

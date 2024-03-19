@@ -1,4 +1,4 @@
-package br.com.versao2.Academia.exceptions;
+package br.com.versao2.Academia.exceptions.manipuladas;
 
 import java.io.Serializable;
 import java.time.Instant;
