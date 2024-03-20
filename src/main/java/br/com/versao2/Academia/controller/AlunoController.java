@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/aluno")
@@ -45,6 +46,14 @@ public class AlunoController {
         Aluno aluno = alunoService.getId(idAluno);
         return ResponseEntity.status(HttpStatus.OK).body(
                  aluno);
+    }
+
+    @GetMapping("/{idAluno}")
+    public ResponseEntity<Aluno> getIdEx(@PathVariable Long idAluno){
+        Aluno aluno = alunoService.authenticated();
+        Optional<Aluno> aluno2 = Optional.ofNullable(alunoService.getId(idAluno));
+        return ResponseEntity.status(HttpStatus.OK).body(
+                aluno);
     }
 
     @DeleteMapping("/{idAluno}")

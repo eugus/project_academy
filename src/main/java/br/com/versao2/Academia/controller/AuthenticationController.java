@@ -72,6 +72,5 @@ public class AuthenticationController {
         alunoService.criarAluno(newAlunoDto);
 
         return ResponseEntity.ok().body("Aluno criado com sucesso! Seja bem-vindo, " + dto.getNome());
-
     }
 }

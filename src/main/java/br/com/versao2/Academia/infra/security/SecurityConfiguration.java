@@ -9,15 +9,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity //habilita a config do web security e eu vou configurar nesta classe
-public class SecurityConfiguration {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     SecurityFilter securityFilter;
@@ -46,7 +48,6 @@ public class SecurityConfiguration {
                             .requestMatchers(HttpMethod.DELETE, "/aluno/{idAluno}").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.DELETE, "/plano/{codigoPlano}").permitAll()
 
-
                             //p/ as demais requisições apenas seja autenticado independente da role
                             //usuario ta logado? se nao retorna erro
 
@@ -65,6 +66,11 @@ public class SecurityConfiguration {
                      */
                     .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                     .build();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAcess();
     }
 
 

@@ -59,10 +59,9 @@ public class PlanoController {
 
      */
 
-
     @DeleteMapping("{codigoPlano}")
     public ResponseEntity excluir2(@PathVariable Long codigoPlano){
-        planoService.deletePlan(codigoPlano);
+        planoService.delete(codigoPlano);
         return ResponseEntity.ok().body("ok");
     }
 

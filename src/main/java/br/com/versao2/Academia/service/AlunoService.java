@@ -6,6 +6,7 @@ import br.com.versao2.Academia.entitys.Plano;
 import br.com.versao2.Academia.exceptions.manipuladas.IdNotFound;
 import br.com.versao2.Academia.repository.AlunoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -75,6 +76,12 @@ public class AlunoService {
         return alunoRepository.findById(idAluno).orElseThrow(
                 () -> new IdNotFound("ID não encontrado! ID: " + idAluno));
     }
+
+    public Aluno authenticated() {
+        return (Aluno) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+
 
     public void delete(Long idAluno){
         if (alunoRepository.existsById(idAluno)) {
