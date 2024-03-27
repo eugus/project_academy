@@ -1,6 +1,7 @@
 package br.com.versao2.Academia.infra.security;
 
 
+import br.com.versao2.Academia.exceptions.manipuladas.Forbidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,20 +10,19 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity //habilita a config do web security e eu vou configurar nesta classe
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration  {
 
     @Autowired
     SecurityFilter securityFilter;
+
 
     /*
         Security Filter Chain -> corrente de filtros que vou aplicar minha requisição
@@ -47,6 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             .requestMatchers(HttpMethod.GET, "/aluno/{idPlano}").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.DELETE, "/aluno/{idAluno}").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.DELETE, "/plano/{codigoPlano}").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/report/{format}").hasRole("ADMIN")
 
                             //p/ as demais requisições apenas seja autenticado independente da role
                             //usuario ta logado? se nao retorna erro
@@ -68,10 +69,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .build();
     }
 
-    @Bean
-    public AccessDeniedHandler accessDeniedHandler() {
-        return new CustomAcess();
-    }
 
 
     //relacionado a autenticação do usuário(autenticar solicitações de login/validar crendenciais)

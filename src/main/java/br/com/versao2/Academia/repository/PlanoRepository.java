@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlanoRepository extends JpaRepository<Plano, Long> {
+
+    Plano findByNomePlano(String nomePlano);
 }

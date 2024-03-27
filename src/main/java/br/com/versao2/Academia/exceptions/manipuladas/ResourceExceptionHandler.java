@@ -45,6 +45,18 @@ public class ResourceExceptionHandler {
     }
 
 
+    @ExceptionHandler(ExistingEntity.class)
+    public ResponseEntity<StandardErro> entityExists(ExistingEntity e, WebRequest request){
+        StandardErro error = new StandardErro();
+        error.setTimestamp(Instant.now());
+        error.setStatus(String.valueOf(HttpStatus.BAD_REQUEST.value()));
+        error.setError("Este plano já existe");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getDescription(false));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+
 
 
 

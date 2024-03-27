@@ -48,7 +48,7 @@ public class AlunoController {
                  aluno);
     }
 
-    @GetMapping("/{idAluno}")
+    /*@GetMapping("/{idAluno}")
     public ResponseEntity<Aluno> getIdEx(@PathVariable Long idAluno){
         Aluno aluno = alunoService.authenticated();
         Optional<Aluno> aluno2 = Optional.ofNullable(alunoService.getId(idAluno));
@@ -56,15 +56,12 @@ public class AlunoController {
                 aluno);
     }
 
+     */
+
     @DeleteMapping("/{idAluno}")
     public ResponseEntity excluir(@PathVariable Long idAluno){
         alunoService.delete(idAluno);
         return ResponseEntity.status(HttpStatus.OK).body("Exclúido");
     }
-
-
-
-
-
 
 }

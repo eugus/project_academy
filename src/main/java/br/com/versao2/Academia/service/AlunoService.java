@@ -40,7 +40,6 @@ public class AlunoService {
     entity.setPlano(plano);
 
 
-
     Aluno dto = alunoRepository.save(entity);
     alunoDto.setIdAluno(dto.getIdAluno());
     return alunoDto;

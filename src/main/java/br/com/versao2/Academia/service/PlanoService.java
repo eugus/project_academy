@@ -4,6 +4,7 @@ import br.com.versao2.Academia.DTO.PlanDTO;
 import br.com.versao2.Academia.DTO.PlanoDTO;
 import br.com.versao2.Academia.entitys.Aluno;
 import br.com.versao2.Academia.entitys.Plano;
+import br.com.versao2.Academia.exceptions.manipuladas.ExistingEntity;
 import br.com.versao2.Academia.exceptions.manipuladas.IdNotFound;
 import br.com.versao2.Academia.repository.PlanoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-
 public class PlanoService {
 
     @Autowired
@@ -25,13 +25,18 @@ public class PlanoService {
     }
 
     public PlanDTO criarPlano(PlanDTO planoDTO){
-        Plano entity = new Plano();
-        entity.setCodigoPlano(planoDTO.getCodigoPlano());
-        entity.setNomePlano(planoDTO.getNomePlano());
-        entity.setValor(planoDTO.getValor());
+        if (planoRepository.findByNomePlano(planoDTO.getNomePlano()) == null) {
 
-        Plano dto = planoRepository.save(entity);
-        planoDTO.setCodigoPlano(dto.getCodigoPlano());
+            Plano entity = new Plano();
+            entity.setCodigoPlano(planoDTO.getCodigoPlano());
+            entity.setNomePlano(planoDTO.getNomePlano());
+            entity.setValor(planoDTO.getValor());
+
+            Plano dto = planoRepository.save(entity);
+            planoDTO.setCodigoPlano(dto.getCodigoPlano());
+        }else {
+            throw new ExistingEntity("PLANO EXISTENTE");
+        }
         return planoDTO;
     }
 
@@ -50,18 +55,12 @@ public class PlanoService {
                 ()-> new IdNotFound("ID não encontrado"));
     }
 
-
     public void delete(Long codigoPlano){
         if (planoRepository.existsById(codigoPlano)){
             planoRepository.deleteById(codigoPlano);
         }else {
             throw new DataIntegrityViolationException("ERRO");
         }
-    }
-
-
-    public void deletePlan(Long codigoPlano){
-        planoRepository.deleteById(codigoPlano);
     }
 
     public Aluno authenticated() {
