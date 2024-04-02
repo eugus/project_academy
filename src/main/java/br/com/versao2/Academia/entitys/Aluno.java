@@ -2,6 +2,7 @@ package br.com.versao2.Academia.entitys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,8 @@ public class Aluno implements UserDetails {
     private Long idAluno;
     private String nome;
     private LocalDateTime dataCadastro;
+    @CPF
+    @Column(unique = true)
     private String cpf;
     private String telefone;
     private String endereco;
@@ -42,19 +45,6 @@ public class Aluno implements UserDetails {
         this.plano = plano;
     }
 
-    /*public Aluno(Long idAluno, String nome, String encryptedPassword, UserRole role, String cpf, String telefone, String endereco, LocalDateTime dataCadastro, Plano plano) {
-        this.idAluno = idAluno;
-        this.nome = nome;
-        this.password = encryptedPassword;
-        this.dataCadastro = dataCadastro = LocalDateTime.now();
-        this.role = role;
-        this.cpf = cpf;
-        this.telefone = telefone;
-        this.endereco = endereco;
-        this.plano = plano;
-    }
-
-     */
 
     @JsonIgnore
     public Plano getPlano() {

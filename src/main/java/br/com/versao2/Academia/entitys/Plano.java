@@ -1,7 +1,5 @@
 package br.com.versao2.Academia.entitys;
 
-import br.com.versao2.Academia.DTO.PlanDTO;
-import br.com.versao2.Academia.DTO.PlanoDTO;
 import jakarta.persistence.*;
 
 import java.io.Serializable;

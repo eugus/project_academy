@@ -1,10 +1,13 @@
 package br.com.versao2.Academia.controller;
 
-import br.com.versao2.Academia.DTO.*;
+import br.com.versao2.Academia.DTO.AlunoDTO;
+import br.com.versao2.Academia.DTO.AuthenticationDTO;
+import br.com.versao2.Academia.DTO.LoginResponseDTO;
 import br.com.versao2.Academia.entitys.Aluno;
 import br.com.versao2.Academia.infra.security.TokenService;
 import br.com.versao2.Academia.repository.AlunoRepository;
 import br.com.versao2.Academia.service.AlunoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -63,6 +66,7 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já existe");
         }
         var encryptedPassword = new BCryptPasswordEncoder().encode(dto.getPassword());
+
 
         AlunoDTO newAlunoDto = new AlunoDTO(dto.getIdAluno(), dto.getNome(),
                 dto.getDataCadastro(), dto.getCpf(), dto.getTelefone(),

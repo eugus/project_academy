@@ -3,6 +3,7 @@ package br.com.versao2.Academia.service;
 import br.com.versao2.Academia.DTO.AlunoDTO;
 import br.com.versao2.Academia.entitys.Aluno;
 import br.com.versao2.Academia.entitys.Plano;
+import br.com.versao2.Academia.exceptions.manipuladas.ExistingEntity;
 import br.com.versao2.Academia.exceptions.manipuladas.IdNotFound;
 import br.com.versao2.Academia.repository.AlunoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +27,30 @@ public class AlunoService {
     }
 
     public AlunoDTO criarAluno(AlunoDTO alunoDto){
-    Aluno entity = new Aluno();
-    entity.setNome(alunoDto.getNome());
-    entity.setDataCadastro(LocalDateTime.now());
-    entity.setCpf(alunoDto.getCpf());
-    entity.setTelefone(alunoDto.getTelefone());
-    entity.setEndereco(alunoDto.getEndereco());
-    entity.setPassword(alunoDto.getPassword());
-    entity.setRole(alunoDto.getRole());
 
-    Plano plano = new Plano();
-    plano.setCodigoPlano(alunoDto.getCodigoPlano());
-    entity.setPlano(plano);
+    if (alunoRepository.findByCpf(alunoDto.getCpf()) == null) {
 
 
-    Aluno dto = alunoRepository.save(entity);
-    alunoDto.setIdAluno(dto.getIdAluno());
+        Aluno entity = new Aluno();
+        entity.setNome(alunoDto.getNome());
+        entity.setDataCadastro(LocalDateTime.now());
+        entity.setCpf(alunoDto.getCpf());
+
+        entity.setTelefone(alunoDto.getTelefone());
+        entity.setEndereco(alunoDto.getEndereco());
+        entity.setPassword(alunoDto.getPassword());
+        entity.setRole(alunoDto.getRole());
+
+        Plano plano = new Plano();
+        plano.setCodigoPlano(alunoDto.getCodigoPlano());
+        entity.setPlano(plano);
+
+
+        Aluno dto = alunoRepository.save(entity);
+        alunoDto.setIdAluno(dto.getIdAluno());
+    }else {
+        throw new ExistingEntity("CPF já foi cadastrado antes");
+    }
     return alunoDto;
     }
 
@@ -50,19 +59,21 @@ public class AlunoService {
     public AlunoDTO update(AlunoDTO alunoDTO, Long idAluno){
         var encryptedPassword = new BCryptPasswordEncoder().encode(alunoDTO.getPassword());
 
-        Aluno entity = alunoRepository.getReferenceById(idAluno);
+        Aluno entity = alunoRepository.findById(idAluno)
+                .orElseThrow(() -> new IdNotFound("ID Inexistente"));
         entity.setNome(alunoDTO.getNome());
         entity.setCpf(alunoDTO.getCpf());
+
         entity.setTelefone(alunoDTO.getTelefone());
         entity.setEndereco(alunoDTO.getEndereco());
         entity.setPassword(encryptedPassword);
         alunoDTO.setDataCadastro(entity.getDataCadastro());
 
-        /*Plano plano = new Plano();
+        Plano plano = new Plano();
         plano.setCodigoPlano(alunoDTO.getCodigoPlano());
         entity.setPlano(plano);
 
-         */
+
 
         Aluno dto = alunoRepository.save(entity);
         alunoDTO.setIdAluno(dto.getIdAluno());

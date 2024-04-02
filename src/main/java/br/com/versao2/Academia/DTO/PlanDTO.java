@@ -1,11 +1,16 @@
 package br.com.versao2.Academia.DTO;
 
 import br.com.versao2.Academia.entitys.Plano;
+import jakarta.validation.constraints.NotBlank;
 
 public class PlanDTO {
 
     private Long codigoPlano;
+
+    @NotBlank
     private String nomePlano;
+
+
     private double valor;
 
     public PlanDTO(Plano plano){

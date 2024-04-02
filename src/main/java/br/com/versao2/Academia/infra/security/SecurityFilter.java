@@ -1,7 +1,6 @@
 package br.com.versao2.Academia.infra.security;
 
 import br.com.versao2.Academia.repository.AlunoRepository;
-import br.com.versao2.Academia.service.ForbiddenExeception;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

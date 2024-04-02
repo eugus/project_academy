@@ -2,7 +2,7 @@ CREATE TABLE aluno(
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome TEXT NOT NULL,
     dataCadastro TIMESTAMP,
-    cpf TEXT NOT NULL,
+    cpf TEXT NOT NULL UNIQUE,
     telefone TEXT NOT NULL,
     endereco TEXT NOT NULL,
     password TEXT NOT NULL,

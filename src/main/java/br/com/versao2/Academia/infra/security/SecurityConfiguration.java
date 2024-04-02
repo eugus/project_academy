@@ -1,7 +1,6 @@
 package br.com.versao2.Academia.infra.security;
 
 
-import br.com.versao2.Academia.exceptions.manipuladas.Forbidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +34,8 @@ public class SecurityConfiguration  {
             return httpSecurity
                     .csrf(csrf -> csrf.disable())
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+
                     .authorizeHttpRequests(authorize -> authorize
                             .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                             .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
@@ -53,7 +54,6 @@ public class SecurityConfiguration  {
                             //usuario ta logado? se nao retorna erro
 
                             .anyRequest().authenticated()
-
                     )
 
 

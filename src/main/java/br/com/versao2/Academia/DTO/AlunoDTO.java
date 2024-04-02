@@ -2,8 +2,11 @@ package br.com.versao2.Academia.DTO;
 
 import br.com.versao2.Academia.entitys.Aluno;
 import br.com.versao2.Academia.entitys.UserRole;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CPF;
 
-import javax.validation.constraints.NotBlank;
+
 import java.time.LocalDateTime;
 
 public class AlunoDTO {
@@ -11,12 +14,22 @@ public class AlunoDTO {
     @NotBlank
     private String nome;
     private LocalDateTime dataCadastro;
+
+    @Column(unique = true) @CPF
     private String cpf;
+    @NotBlank
     private String telefone;
+    @NotBlank
     private String endereco;
+    @NotBlank
     private String password;
+
     public UserRole role;
+
     private Long codigoPlano;
+
+    public AlunoDTO() {
+    }
 
     public AlunoDTO(Aluno aluno) {
         idAluno = aluno.getIdAluno();

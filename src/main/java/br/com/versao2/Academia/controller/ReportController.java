@@ -13,23 +13,15 @@ import java.io.FileNotFoundException;
 
 @RestController
 @RequestMapping("/report")
-
 public class ReportController {
 
 
     @Autowired
     private ReportService reportService;
 
-
     @GetMapping("/{format}")
-    public ResponseEntity generateReport(@PathVariable String format) throws FileNotFoundException, JRException {
-        var retornar = reportService.exportReport(format);
-        return ResponseEntity.ok().body("Success, " + retornar);
-    }
-
-
-    @GetMapping("/teste/{format}")
     public ResponseEntity generateReport2(@PathVariable String format) throws FileNotFoundException, JRException {
+
         var retornar = reportService.exportReport2(format);
         return ResponseEntity.ok().body("Success, " + retornar);
     }

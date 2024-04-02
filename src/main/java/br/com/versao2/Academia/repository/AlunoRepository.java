@@ -1,5 +1,6 @@
 package br.com.versao2.Academia.repository;
 
+import br.com.versao2.Academia.DTO.AlunoDTO;
 import br.com.versao2.Academia.entitys.Aluno;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     UserDetails findByNome(String nome);
+
+    Aluno findByCpf(String cpf);
 }

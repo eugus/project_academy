@@ -1,7 +1,6 @@
 package br.com.versao2.Academia.service;
 
 import br.com.versao2.Academia.DTO.PlanDTO;
-import br.com.versao2.Academia.DTO.PlanoDTO;
 import br.com.versao2.Academia.entitys.Aluno;
 import br.com.versao2.Academia.entitys.Plano;
 import br.com.versao2.Academia.exceptions.manipuladas.ExistingEntity;
@@ -35,13 +34,14 @@ public class PlanoService {
             Plano dto = planoRepository.save(entity);
             planoDTO.setCodigoPlano(dto.getCodigoPlano());
         }else {
-            throw new ExistingEntity("PLANO EXISTENTE");
+            throw new ExistingEntity("Plano já existe");
         }
         return planoDTO;
     }
 
     public PlanDTO update(PlanDTO planoDTO, Long codigoPlano){
-        Plano entity = planoRepository.getReferenceById(codigoPlano);
+        Plano entity = planoRepository.findById(codigoPlano)
+                .orElseThrow(() -> new IdNotFound("ID Inexistente"));
         entity.setNomePlano(planoDTO.getNomePlano());
         entity.setValor(planoDTO.getValor());
 
@@ -50,7 +50,7 @@ public class PlanoService {
         return planoDTO;
     }
 
-    public Plano getPlano(Long codigoPlano){
+    public Plano getIdPlano(Long codigoPlano){
         return planoRepository.findById(codigoPlano).orElseThrow(
                 ()-> new IdNotFound("ID não encontrado"));
     }

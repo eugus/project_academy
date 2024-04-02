@@ -47,18 +47,18 @@ public class ReportService {
     public String exportReport2(String report) throws FileNotFoundException, JRException {
         String path = "/home/gustavinho3/Downloads/";
         List<Aluno> teste = alunoRepository.findAll();
-        File file = ResourceUtils.getFile("classpath:teste.jrxml");
+        File file = ResourceUtils.getFile("classpath:academicos.jrxml");
         JasperDesign jasperDesign;
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("createdBy", "Teste");
+        parameters.put("createdBy", "Alunos");
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(teste);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         if (report.equalsIgnoreCase("html")){
-            JasperExportManager.exportReportToHtmlFile(jasperPrint,path + "\\teste.html");
+            JasperExportManager.exportReportToHtmlFile(jasperPrint,path + "\\alunos.html");
         }
         if (report.equalsIgnoreCase("pdf")){
-            JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\teste.pdf");
+            JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\alunos.pdf");
 
         }
         return "relatório gerado no caminho: " + path;

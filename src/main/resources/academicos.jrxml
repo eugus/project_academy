@@ -29,7 +29,7 @@
         <band height="822" splitType="Stretch">
             <image vAlign="Bottom">
                 <reportElement positionType="Float" mode="Transparent" x="-20" y="313" width="105" height="409" uuid="6be67a9c-1fb8-44ea-93c5-22c7de2c74ad"/>
-                <imageExpression><![CDATA["/home/gustavinho3/Downloads/waves_1_11zon.jpeg"]]></imageExpression>
+                <imageExpression><![CDATA["/home/gustavinho3/Downloads/waves.jpeg"]]></imageExpression>
             </image>
             <frame>
                 <reportElement mode="Opaque" x="-20" y="722" width="105" height="100" forecolor="#666666" backcolor="#666666" uuid="58048a65-569d-454e-b6dd-f3bb46c94ee3"/>
@@ -68,7 +68,7 @@
                 <textElement textAlignment="Right" verticalAlignment="Middle">
                     <font fontName="SansSerif" size="54" isBold="false"/>
                 </textElement>
-                <text><![CDATA[Teste]]></text>
+                <text><![CDATA[Academicos]]></text>
             </staticText>
             <staticText>
                 <reportElement style="SubTitle" x="234" y="115" width="321" height="37" uuid="bd605e96-6228-492c-9dd6-f33258081a5a"/>
