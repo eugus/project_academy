@@ -8,6 +8,8 @@ import br.com.versao2.Academia.exceptions.manipuladas.IdNotFound;
 import br.com.versao2.Academia.repository.PlanoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +67,11 @@ public class PlanoService {
 
     public Aluno authenticated() {
         return (Aluno) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+
+    public Page<Plano> getPage(Pageable pageable) {
+        return planoRepository.findAll(pageable);
     }
 
 

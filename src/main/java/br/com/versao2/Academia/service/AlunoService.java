@@ -7,6 +7,8 @@ import br.com.versao2.Academia.exceptions.manipuladas.ExistingEntity;
 import br.com.versao2.Academia.exceptions.manipuladas.IdNotFound;
 import br.com.versao2.Academia.repository.AlunoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -92,13 +94,16 @@ public class AlunoService {
     }
 
 
-
     public void delete(Long idAluno){
         if (alunoRepository.existsById(idAluno)) {
             alunoRepository.deleteById(idAluno);
         }else {
             throw new IdNotFound("ID não encotrado");
         }
+    }
+
+    public Page<Aluno> getPage(Pageable pageable){
+        return alunoRepository.findAll(pageable);
     }
 
 

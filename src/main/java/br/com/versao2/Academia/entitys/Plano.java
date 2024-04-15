@@ -57,7 +57,14 @@ public class Plano implements Serializable {
         return aluno;
     }
 
-
+    @Override
+    public String toString() {
+        return "Plano{" +
+                "codigoPlano=" + codigoPlano +
+                ", nomePlano='" + nomePlano + '\'' +
+                ", valor=" + valor +
+                '}';
+    }
 }
 
 

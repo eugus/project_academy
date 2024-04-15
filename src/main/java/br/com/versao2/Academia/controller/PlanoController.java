@@ -1,13 +1,20 @@
 package br.com.versao2.Academia.controller;
 
 import br.com.versao2.Academia.DTO.PlanDTO;
+import br.com.versao2.Academia.entitys.Aluno;
 import br.com.versao2.Academia.entitys.Plano;
 import br.com.versao2.Academia.entitys.ResponseMessage;
+import br.com.versao2.Academia.infra.security.TokenService;
+import br.com.versao2.Academia.repository.AlunoRepository;
 import br.com.versao2.Academia.service.PlanoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,9 +26,17 @@ public class PlanoController {
     @Autowired
     private PlanoService planoService;
 
+    @Autowired
+    private TokenService tokenService;
+    @Autowired
+    private AlunoRepository alunoRepository;
+
+
+
 
     @PostMapping()
     public ResponseEntity<ResponseMessage> post(@RequestBody @Valid PlanDTO planoDTO) {
+
         planoService.criarPlano(planoDTO);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ResponseMessage("PLANO CRIADO"));
@@ -51,6 +66,15 @@ public class PlanoController {
         planoService.delete(codigoPlano);
         return ResponseEntity.ok().body("Plano deletado com sucesso");
     }
+
+    @GetMapping("/pageP")
+    public ResponseEntity<Page<Plano>> getPlanoPage(Pageable pageable){
+        Page<Plano> page = planoService.getPage(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(page);
+    }
+
+
+
 
 
 }
