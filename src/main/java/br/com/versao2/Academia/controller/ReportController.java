@@ -13,7 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/report")
@@ -23,23 +28,25 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
-    @GetMapping("/{format}")
-    public ResponseEntity generateReport2(@PathVariable String format) throws FileNotFoundException, JRException {
+    @GetMapping("/getPdf")
+    public ResponseEntity generateReport2() throws IOException, JRException {
 
-        var retornar = reportService.exportReport2(format);
-        return ResponseEntity.ok().body("Success, " + retornar);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
+                .body(reportService.exportReport2());
+    }
+
+    @GetMapping(value = "/pdfFile")
+    public ResponseEntity<?> getPdf() throws IOException {
+
+        Path path = Paths.get("C:\\imagens_sellouspay\\");
+        byte[] arquivo = Files.readAllBytes(path);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF).body(arquivo);
     }
 
 
-    @GetMapping("/alunos")
-    public ResponseEntity<Resource> getFileAluno(){
-        String filename = "alunos.pdf";
-        org.springframework.core.io.InputStreamResource file = new InputStreamResource(reportService.load());
-        return  ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "anexo; nome do arquivo= " + filename)
-                .contentType(MediaType.parseMediaType("application/pdf"))
-                .body(file);
-    }
+
 
 
 }

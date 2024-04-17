@@ -6,15 +6,22 @@ import br.com.versao2.Academia.repository.AlunoRepository;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+import net.sf.jasperreports.export.type.PdfaConformanceEnum;
 import net.sf.jasperreports.repo.InputStreamResource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,35 +34,42 @@ public class ReportService {
     @Autowired
     private AlunoRepository alunoRepository;
 
-
-    public String exportReport2(String report) throws FileNotFoundException, JRException {
-        String path = "/home/gustavinho3/Documentos/";
-        List<Aluno> teste = alunoRepository.findAll();
+    public byte[] exportReport2() throws IOException, JRException {
+        String caminho = "/home/gustavinho3/Documentos/";
+        List<Aluno> listAlunos = alunoRepository.findAll();
         File file = ResourceUtils.getFile("classpath:gymstudents.jrxml");
         JasperDesign jasperDesign;
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("createdBy", "Alunos");
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(teste);
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listAlunos);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-        if (report.equalsIgnoreCase("html")){
-            JasperExportManager.exportReportToHtmlFile(jasperPrint,path + "\\alunos.html");
-        }
-        if (report.equalsIgnoreCase("pdf")){
-            JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\alunos.pdf");
+        JasperExportManager.exportReportToPdfFile(jasperPrint, caminho + "alunos.pdf");
 
-        }
-        return "relatório gerado no caminho: " + path;
+        Path path = Paths.get(caminho+ "alunos.pdf");
+        byte[] arquivo = Files.readAllBytes(path);
+
+        return arquivo;
     }
 
 
-    public ByteArrayInputStream load(){
-        List<Aluno> cursos = alunoRepository.findAll();
+    public String export( Path path) throws FileNotFoundException, JRException {
+         path = Paths.get("/home/gustavinho3/Documentos/alunos.pdf");
 
-        ByteArrayInputStream in = new ByteArrayInputStream("".getBytes());
-        return in;
-
+        List<Aluno> listAlunos = alunoRepository.findAll();
+        File file = ResourceUtils.getFile("classpath:gymstudents.jrxml");
+        JasperDesign jasperDesign;
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("createdBy", "Alunos");
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listAlunos);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+        JasperExportManager.exportReportToPdfFile(jasperPrint,   path + "alunos.pdf");
+        return "relatório gerado no caminho: "  ;
     }
+
+
+
 
 
 

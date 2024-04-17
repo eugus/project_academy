@@ -3,6 +3,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gymstudents" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="0" uuid="e115bc59-fd0f-446b-a585-04725e27d7f0">
     <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
+    <property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
     <style name="Title" fontName="SansSerif" fontSize="26" isBold="true"/>
     <style name="SubTitle" forecolor="#666666" fontName="SansSerif" fontSize="18"/>
     <style name="Column header" forecolor="#FFFFFF" fontName="SansSerif" fontSize="12" isBold="true"/>
@@ -39,6 +40,7 @@
                     </textElement>
                     <textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
                 </textField>
+
                 <textField evaluationTime="Report">
                     <reportElement style="Column header" x="0" y="77" width="104" height="20" forecolor="#000000" uuid="e20c8a65-aded-41dc-a107-108a9159af99"/>
                     <box leftPadding="4" rightPadding="4"/>

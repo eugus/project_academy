@@ -53,6 +53,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/aluno/page", "plano/pageP").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/csv/alunos").permitAll()
                         .requestMatchers(HttpMethod.GET,  "/report/alunos").permitAll()
+                        .requestMatchers(HttpMethod.GET,  "/report/getPdf").permitAll()
 
                         //p/ as demais requisições apenas seja autenticado independente da role
                         //usuario ta logado? se nao retorna erro
