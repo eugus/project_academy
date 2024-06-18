@@ -77,6 +77,21 @@ public class ResourceExceptionHandler {
     }
 
 
+    @ExceptionHandler(InvalidTokenJwt.class)
+    public ResponseEntity<StandardErro> unathorizeTeste(InvalidTokenJwt e, WebRequest request){
+        StandardErro error = new StandardErro();
+        error.setTimestamp(Instant.now());
+        error.setStatus(String.valueOf(HttpStatus.FORBIDDEN.value()));
+        error.setError("Sem permissão");
+        //error.setMessage(e.getMessage());
+        error.setPath(request.getDescription(false));
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    }
+
+
+
+
+
 
 
 }

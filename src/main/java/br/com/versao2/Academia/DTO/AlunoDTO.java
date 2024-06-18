@@ -1,19 +1,20 @@
 package br.com.versao2.Academia.DTO;
 
 import br.com.versao2.Academia.entitys.Aluno;
+import br.com.versao2.Academia.entitys.Plano;
 import br.com.versao2.Academia.entitys.UserRole;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CPF;
 
-
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AlunoDTO {
     private Long idAluno;
     @NotBlank
     private String nome;
-    private LocalDateTime dataCadastro;
+    private String dataCadastro;
 
     @Column(unique = true) @CPF
     private String cpf;
@@ -43,16 +44,19 @@ public class AlunoDTO {
         codigoPlano = aluno.getPlano().getCodigoPlano();
     }
 
-    public AlunoDTO(Long idAluno, String nome, LocalDateTime dataCadastro, String cpf, String telefone, String endereco, String encryptedPassword, UserRole role, Long codigoPlano) {
+    public AlunoDTO(Long idAluno, String nome, String dataCadastro, String cpf, String telefone, String endereco, String encryptedPassword, UserRole role, Long codigoPlano) {
         this.idAluno = idAluno;
         this.nome = nome;
-        this.dataCadastro = dataCadastro = LocalDateTime.now();
+        this.dataCadastro = dataCadastro;
         this.cpf = cpf;
         this.telefone = telefone;
         this.endereco = endereco;
         this.password = encryptedPassword;
         this.role = role;
         this.codigoPlano = codigoPlano;
+    }
+
+    public AlunoDTO(long idAluno, String silva, String encryptedPassword, UserRole userRole, String telefone, String endereco, String number, String ruaNula, Plano codigo) {
     }
 
     public Long getIdAluno() {
@@ -71,11 +75,11 @@ public class AlunoDTO {
         this.nome = nome;
     }
 
-    public LocalDateTime getDataCadastro() {
+    public String getDataCadastro() {
         return dataCadastro;
     }
 
-    public void setDataCadastro(LocalDateTime dataCadastro) {
+    public void setDataCadastro(String dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 
@@ -125,6 +129,17 @@ public class AlunoDTO {
 
     public void setCodigoPlano(Long codigoPlano) {
         this.codigoPlano = codigoPlano;
+    }
+
+    public String dataAtual(){
+
+        Date date = new Date();
+        SimpleDateFormat sddata = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdhora = new SimpleDateFormat("HH:mm:ss");
+        String data = sddata.format(date);
+        String hora = sdhora.format(date);
+
+        return data + " " + hora;
     }
 }
 

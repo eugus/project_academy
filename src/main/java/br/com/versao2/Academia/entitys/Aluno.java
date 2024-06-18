@@ -7,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class Aluno implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAluno;
     private String nome;
-    private LocalDateTime dataCadastro;
+    private String dataCadastro;
     @CPF
     @Column(unique = true)
     private String cpf;
@@ -33,7 +32,7 @@ public class Aluno implements UserDetails {
     public Aluno() {
     }
 
-    public Aluno(Long idAluno, String nome, String encryptedPassword, UserRole role, String cpf,LocalDateTime dataCadastro, String telefone, String endereco, Plano plano) {
+    public Aluno(Long idAluno, String nome, String encryptedPassword, UserRole role, String cpf,String dataCadastro, String telefone, String endereco, Plano plano) {
         this.idAluno = idAluno;
         this.nome = nome;
         this.cpf = cpf;
@@ -70,7 +69,7 @@ public class Aluno implements UserDetails {
 
     @Override
     public String getUsername() {
-        return nome;
+        return cpf;
     }
 
 
@@ -151,11 +150,11 @@ public class Aluno implements UserDetails {
         this.role = role;
     }
 
-    public LocalDateTime getDataCadastro() {
+    public String getDataCadastro() {
         return dataCadastro;
     }
 
-    public void setDataCadastro(LocalDateTime dataCadastro) {
+    public void setDataCadastro(String dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 
@@ -173,4 +172,7 @@ public class Aluno implements UserDetails {
                 ", plano=" + plano +
                 '}';
     }
+
+
+
 }

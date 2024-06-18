@@ -6,7 +6,6 @@ import br.com.versao2.Academia.entitys.Plano;
 import br.com.versao2.Academia.exceptions.manipuladas.ExistingEntity;
 import br.com.versao2.Academia.exceptions.manipuladas.IdNotFound;
 import br.com.versao2.Academia.repository.PlanoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +17,11 @@ import java.util.List;
 @Service
 public class PlanoService {
 
-    @Autowired
-    private PlanoRepository planoRepository;
+    private final PlanoRepository planoRepository;
+
+    public PlanoService(PlanoRepository planoRepository) {
+        this.planoRepository = planoRepository;
+    }
 
     public List<Plano> get(){
        return planoRepository.findAll();

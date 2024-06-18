@@ -5,9 +5,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -29,18 +28,23 @@ public class SecurityFilter extends OncePerRequestFilter {
         enviado pelo usuário é valido(se é um token que nossa aplicação emitiu)
      */
 
-    @Autowired
+    final
     TokenService service;
-    @Autowired
+    final
     AlunoRepository repository;
 
+    public SecurityFilter(TokenService service, AlunoRepository repository) {
+        this.service = service;
+        this.repository = repository;
+    }
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull  HttpServletRequest request, @NonNull HttpServletResponse response,@NonNull FilterChain filterChain) throws ServletException, IOException {
 
         var token = recoverToken(request);
         if (token != null) {
             var login = service.validateToken(token);
-            UserDetails aluno = repository.findByNome(login);
+            UserDetails aluno = repository.findByCpf(login);
             System.out.println("sdada");
 
             var authentication = new UsernamePasswordAuthenticationToken(aluno, null, aluno.getAuthorities());

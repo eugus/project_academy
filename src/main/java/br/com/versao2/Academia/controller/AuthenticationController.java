@@ -5,16 +5,14 @@ import br.com.versao2.Academia.DTO.AuthenticationDTO;
 import br.com.versao2.Academia.DTO.LoginResponseDTO;
 import br.com.versao2.Academia.entitys.Aluno;
 import br.com.versao2.Academia.infra.security.TokenService;
-import br.com.versao2.Academia.repository.AlunoRepository;
 import br.com.versao2.Academia.service.AlunoService;
+import br.com.versao2.Academia.service.AuthorizationService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,21 +23,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
-    @Autowired
+
+    final
     AlunoService alunoService;
 
-    @Autowired
+    final
     TokenService service;
 
-    @Autowired
-    private AlunoRepository repository;
-
-    @Autowired
+    final
     AuthenticationManager authenticationManager;
 
+    final
+    AuthorizationService authorizationService;
+
+    public AuthenticationController(AlunoService alunoService, TokenService service, AuthenticationManager authenticationManager, AuthorizationService authorizationService) {
+        this.alunoService = alunoService;
+        this.service = service;
+        this.authenticationManager = authenticationManager;
+        this.authorizationService = authorizationService;
+    }
+
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO dto){
-        var userNamePassword = new UsernamePasswordAuthenticationToken(dto.nome(), dto.password());
+    public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDTO dto){
+        var userNamePassword = new UsernamePasswordAuthenticationToken(dto.cpf(), dto.password());
 
         try {
             var auth = authenticationManager.authenticate(userNamePassword);
@@ -61,18 +67,17 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid AlunoDTO dto){
 
-        //caso exista um usuário com esse nome
-        if (repository.findByNome(dto.getNome()) != null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já existe");
-        }
-        var encryptedPassword = new BCryptPasswordEncoder().encode(dto.getPassword());
+
+        authorizationService.register(dto);
+
+        return ResponseEntity.ok().body("Aluno criado com sucesso! Seja bem-vindo, " + dto.getNome());
+    }
 
 
-        AlunoDTO newAlunoDto = new AlunoDTO(dto.getIdAluno(), dto.getNome(),
-                dto.getDataCadastro(), dto.getCpf(), dto.getTelefone(),
-                dto.getEndereco(), encryptedPassword,dto.getRole(), dto.getCodigoPlano());
+    @PostMapping("/register/standard")
+    public ResponseEntity<?> registeruserNormal(@RequestBody @Valid AlunoDTO dto){
 
-        alunoService.criarAluno(newAlunoDto);
+        authorizationService.registerStandard(dto);
 
         return ResponseEntity.ok().body("Aluno criado com sucesso! Seja bem-vindo, " + dto.getNome());
     }

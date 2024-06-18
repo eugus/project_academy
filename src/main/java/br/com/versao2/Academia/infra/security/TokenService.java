@@ -1,10 +1,10 @@
 package br.com.versao2.Academia.infra.security;
 
 import br.com.versao2.Academia.entitys.Aluno;
+import br.com.versao2.Academia.exceptions.manipuladas.InvalidTokenJwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class TokenService {
             Algorithm algorithm =  Algorithm.HMAC256(secret);
             String token = JWT.create()
                     .withIssuer("academia-auth-api") // quem esta emitindo esse token
-                    .withSubject(aluno.getNome()) // quem esta ganhando esse token
+                    .withSubject(aluno.getCpf()) // quem esta ganhando esse token
                     .withExpiresAt(genExperationData()) //hora que expira o token
                     .sign(algorithm); //gerar o token
 
@@ -39,7 +39,7 @@ public class TokenService {
         //instante da criação do token + 2 horas zoneOffset --> Brasilia
     }
 
-    public String validateToken(String token){
+    public String validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
@@ -47,8 +47,8 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
-        }catch (JWTVerificationException e){
-            return null;
+        }catch (InvalidTokenJwt e){
+            return "Sem permissão";
         }
     }
 

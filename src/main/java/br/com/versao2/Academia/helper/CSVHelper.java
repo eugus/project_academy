@@ -1,20 +1,15 @@
 package br.com.versao2.Academia.helper;
 
 import br.com.versao2.Academia.entitys.Aluno;
-import br.com.versao2.Academia.repository.AlunoRepository;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.design.JasperDesign;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ResourceUtils;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CSVHelper {
 
@@ -25,14 +20,14 @@ public class CSVHelper {
 
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();
-             CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out),format);){
+             CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out),format)){
             for (Aluno aluno : cursos){
                 List<String> data = Arrays.asList(
-                        String.valueOf("idAluno: " + aluno.getIdAluno()+ ""),
+                        "idAluno: " + aluno.getIdAluno() + "",
                         "Nome: " + aluno.getNome() + "",
-                        String.valueOf("Cpf: " + aluno.getCpf() ),
-                        String.valueOf("Enedreço: " + aluno.getEndereco() ),
-                        String.valueOf("Telefone: " + aluno.getTelefone())
+                        "Cpf: " + aluno.getCpf(),
+                        "Enedreço: " + aluno.getEndereco(),
+                        "Telefone: " + aluno.getTelefone()
 
                 );
                 csvPrinter.printRecord(data);

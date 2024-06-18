@@ -6,10 +6,7 @@ import br.com.versao2.Academia.entitys.ResponseMessage;
 import br.com.versao2.Academia.infra.security.TokenService;
 import br.com.versao2.Academia.service.AlunoService;
 import br.com.versao2.Academia.service.ReportService;
-import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.repo.InputStreamResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
@@ -27,10 +23,6 @@ public class AlunoController {
     @Autowired
     private AlunoService alunoService;
 
-    @Autowired
-    private TokenService tokenService;
-
-    private ReportService  reportService;
 
     @PostMapping()
     public ResponseEntity<ResponseMessage> postDto(@RequestBody @Valid AlunoDTO dto){
