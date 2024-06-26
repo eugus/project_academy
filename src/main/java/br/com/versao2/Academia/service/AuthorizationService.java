@@ -20,6 +20,7 @@ public class AuthorizationService implements UserDetailsService {
     public AuthorizationService(AlunoRepository alunoRepository, AlunoService alunoService) {
         this.alunoRepository = alunoRepository;
         this.alunoService = alunoService;
+
     }
 
     @Override

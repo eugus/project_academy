@@ -3,11 +3,9 @@ package br.com.versao2.Academia.controller;
 import br.com.versao2.Academia.DTO.AlunoDTO;
 import br.com.versao2.Academia.entitys.Aluno;
 import br.com.versao2.Academia.entitys.ResponseMessage;
-import br.com.versao2.Academia.infra.security.TokenService;
 import br.com.versao2.Academia.service.AlunoService;
-import br.com.versao2.Academia.service.ReportService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,9 +18,11 @@ import java.util.List;
 @RequestMapping("/aluno")
 public class AlunoController {
 
-    @Autowired
-    private AlunoService alunoService;
+    private final AlunoService alunoService;
 
+    public AlunoController(AlunoService alunoService) {
+        this.alunoService = alunoService;
+    }
 
     @PostMapping()
     public ResponseEntity<ResponseMessage> postDto(@RequestBody @Valid AlunoDTO dto){
@@ -31,6 +31,8 @@ public class AlunoController {
                 new ResponseMessage("Aluno Criado"));
     }
 
+
+    @Operation(summary = "Lista todos os contextos")
     @GetMapping()
     public ResponseEntity<List<Aluno>> getAluno(){
         var listAluno  = alunoService.getAluno();
@@ -52,8 +54,8 @@ public class AlunoController {
 
 
     @DeleteMapping("/{idAluno}")
-    public ResponseEntity delete(@PathVariable Long idAluno){
-        alunoService.delete(idAluno);
+    public ResponseEntity<?> delete(@PathVariable Long idAluno){
+        alunoService.delete2(idAluno);
         return ResponseEntity.status(HttpStatus.OK).body("Aluno deletado");
     }
 

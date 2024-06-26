@@ -95,6 +95,18 @@
 			<artifactId>flyway-core</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-security</artifactId>
+			<version>1.6.11</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.flywaydb</groupId>
@@ -121,7 +133,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-
 
 	</build>
 

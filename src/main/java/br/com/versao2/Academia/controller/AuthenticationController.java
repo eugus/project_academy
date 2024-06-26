@@ -28,23 +28,23 @@ public class AuthenticationController {
     AlunoService alunoService;
 
     final
-    TokenService service;
-
+    AuthorizationService authorizationService;
     final
     AuthenticationManager authenticationManager;
-
     final
-    AuthorizationService authorizationService;
+    TokenService service;
 
-    public AuthenticationController(AlunoService alunoService, TokenService service, AuthenticationManager authenticationManager, AuthorizationService authorizationService) {
+    public AuthenticationController(AlunoService alunoService , AuthorizationService authorizationService, AuthenticationManager authenticationManager, TokenService service) {
         this.alunoService = alunoService;
-        this.service = service;
         this.authenticationManager = authenticationManager;
+        this.service = service;
+
         this.authorizationService = authorizationService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDTO dto){
+
         var userNamePassword = new UsernamePasswordAuthenticationToken(dto.cpf(), dto.password());
 
         try {
@@ -54,6 +54,7 @@ public class AuthenticationController {
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Falha na autenticação, usuário não encontrado");
         }
+
 
         //valida as credenciais do usuário
 
@@ -67,12 +68,10 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid AlunoDTO dto){
 
-
         authorizationService.register(dto);
 
         return ResponseEntity.ok().body("Aluno criado com sucesso! Seja bem-vindo, " + dto.getNome());
     }
-
 
     @PostMapping("/register/standard")
     public ResponseEntity<?> registeruserNormal(@RequestBody @Valid AlunoDTO dto){

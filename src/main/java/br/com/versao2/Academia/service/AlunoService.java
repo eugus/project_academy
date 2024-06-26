@@ -20,6 +20,7 @@ public class AlunoService {
 
     private final AlunoRepository alunoRepository;
 
+
     public AlunoService(AlunoRepository alunoRepository) {
         this.alunoRepository = alunoRepository;
     }
@@ -28,7 +29,7 @@ public class AlunoService {
         return alunoRepository.findAll();
     }
 
-    public AlunoDTO criaUsuarioStandard(AlunoDTO alunoDto){
+    public void criaUsuarioStandard(AlunoDTO alunoDto){
 
         if (alunoRepository.findByCpf(alunoDto.getCpf()) == null) {
 
@@ -47,7 +48,6 @@ public class AlunoService {
         }else {
             throw new ExistingEntity("CPF já foi cadastrado antes");
         }
-        return alunoDto;
     }
 
     public AlunoDTO criarAluno(AlunoDTO alunoDto){
@@ -82,9 +82,11 @@ public class AlunoService {
     public AlunoDTO update(AlunoDTO alunoDTO, Long idAluno){
 
         try {
+
             var encryptedPassword = new BCryptPasswordEncoder().encode(alunoDTO.getPassword());
 
             Aluno entity = alunoRepository.findById(idAluno).get();
+
             entity.setNome(alunoDTO.getNome());
             entity.setCpf(alunoDTO.getCpf());
 
@@ -98,37 +100,31 @@ public class AlunoService {
             plano.setCodigoPlano(alunoDTO.getCodigoPlano());
             entity.setPlano(plano);
 
-
-
             Aluno dto = alunoRepository.save(entity);
             alunoDTO.setIdAluno(dto.getIdAluno());
-
         }catch (RuntimeException e){
-            throw new IdNotFound("ID Inexistente ou CPF não corresponde a este usuário");
+            throw new IdNotFound("ID Inexsitente ou não corresponde a esse CPF");
         }
+
+
 
         return alunoDTO;
     }
 
 
-    public Aluno getId(Long idAluno){
-        return alunoRepository.findById(idAluno).orElseThrow(
-                () -> new IdNotFound("ID não encontrado! ID: " + idAluno));
+    public Aluno getId(Long idAluno) {
+        try {
+
+            return alunoRepository.findById(idAluno).get();
+
+        } catch (Exception e) {
+            throw new IdNotFound("ID Inexistente");
+        }
     }
 
     public Aluno authenticated() {
         return (Aluno) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
-
-
-    public void delete(Long idAluno) throws IdNotFound{
-        if (alunoRepository.existsById(idAluno)) {
-            alunoRepository.deleteById(idAluno);
-        }else {
-            throw new IdNotFound("ID não encotrado");
-        }
-    }
-
 
     public void delete2(Long idAluno) {
         try {

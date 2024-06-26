@@ -27,13 +27,13 @@ public class ResourceExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<?> data(DataIntegrityViolationException e, WebRequest request){
+    public ResponseEntity<?> data( WebRequest request){
         StandardErro error = new StandardErro();
 
         error.setTimestamp(Instant.now());
         error.setStatus(String.valueOf(HttpStatus.BAD_REQUEST.value()));
         error.setError("Verifique se este plano contém alunos ou se o ID é válido");
-        //error.setMessage(e.getMessage());
+
         error.setPath(request.getDescription(false));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
@@ -53,12 +53,11 @@ public class ResourceExceptionHandler {
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<StandardErro> notBlank(MethodArgumentNotValidException e, WebRequest request){
+    public ResponseEntity<StandardErro> notBlank( WebRequest request){
         StandardErro error = new StandardErro();
         error.setTimestamp(Instant.now());
         error.setStatus(String.valueOf(HttpStatus.BAD_REQUEST.value()));
         error.setError("Preencha todos os campos ou insira um CPF válido");
-        //error.setMessage(e.getMessage());
         error.setPath(request.getDescription(false));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
@@ -66,24 +65,22 @@ public class ResourceExceptionHandler {
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(Unathorized.class)
-    public ResponseEntity<StandardErro> unathorized(MethodArgumentNotValidException e, WebRequest request){
+    public ResponseEntity<StandardErro> unathorized( WebRequest request){
         StandardErro error = new StandardErro();
         error.setTimestamp(Instant.now());
         error.setStatus(String.valueOf(HttpStatus.FORBIDDEN.value()));
         error.setError("Sem permissão");
-        //error.setMessage(e.getMessage());
         error.setPath(request.getDescription(false));
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 
 
     @ExceptionHandler(InvalidTokenJwt.class)
-    public ResponseEntity<StandardErro> unathorizeTeste(InvalidTokenJwt e, WebRequest request){
+    public ResponseEntity<StandardErro> unathorizeTeste( WebRequest request){
         StandardErro error = new StandardErro();
         error.setTimestamp(Instant.now());
         error.setStatus(String.valueOf(HttpStatus.FORBIDDEN.value()));
         error.setError("Sem permissão");
-        //error.setMessage(e.getMessage());
         error.setPath(request.getDescription(false));
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }

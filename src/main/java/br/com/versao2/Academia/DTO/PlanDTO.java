@@ -25,6 +25,9 @@ public class PlanDTO {
         this.valor = valor;
     }
 
+    public PlanDTO() {
+    }
+
     public Long getCodigoPlano() {
         return codigoPlano;
     }

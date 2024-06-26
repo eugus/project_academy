@@ -1,7 +1,6 @@
 package br.com.versao2.Academia.DTO;
 
 import br.com.versao2.Academia.entitys.Aluno;
-import br.com.versao2.Academia.entitys.Plano;
 import br.com.versao2.Academia.entitys.UserRole;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
@@ -54,9 +53,6 @@ public class AlunoDTO {
         this.password = encryptedPassword;
         this.role = role;
         this.codigoPlano = codigoPlano;
-    }
-
-    public AlunoDTO(long idAluno, String silva, String encryptedPassword, UserRole userRole, String telefone, String endereco, String number, String ruaNula, Plano codigo) {
     }
 
     public Long getIdAluno() {

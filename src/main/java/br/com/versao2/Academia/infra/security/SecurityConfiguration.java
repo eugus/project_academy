@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity //habilita a config do web security e eu vou configurar nesta classe
 //desabilita as configurações do spring security
+
 public class SecurityConfiguration {
 
     final
@@ -35,9 +37,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
          httpSecurity
+
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+
 
                         .requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/register/standard").permitAll()
                         .requestMatchers(HttpMethod.POST, "/aluno").permitAll()
@@ -55,11 +58,18 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET,  "/report/alunos").permitAll()
                         .requestMatchers(HttpMethod.GET,  "/report/getPdf").permitAll()
 
+
+
+
                         //p/ as demais requisições apenas seja autenticado independente da role
                         //usuario ta logado? se nao retorna erro
 
                         .anyRequest().authenticated()
+
                 )
+
+                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
 
 
                 /*antes que ele caia nessa condição acima quero fazer a verificação
@@ -72,6 +82,16 @@ public class SecurityConfiguration {
                  */
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
                 return httpSecurity.build();
+    }
+
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers(
+                "/v3/api-docs/**",
+                "/swagger-ui/**",
+                "/swagger-ui/index.html"
+        );
     }
 
     //relacionado a autenticação do usuário(autenticar solicitações de login/validar crendenciais)

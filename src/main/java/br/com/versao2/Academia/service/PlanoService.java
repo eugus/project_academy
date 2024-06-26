@@ -6,7 +6,6 @@ import br.com.versao2.Academia.entitys.Plano;
 import br.com.versao2.Academia.exceptions.manipuladas.ExistingEntity;
 import br.com.versao2.Academia.exceptions.manipuladas.IdNotFound;
 import br.com.versao2.Academia.repository.PlanoRepository;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,26 +43,38 @@ public class PlanoService {
     }
 
     public PlanDTO update(PlanDTO planoDTO, Long codigoPlano){
-        Plano entity = planoRepository.findById(codigoPlano)
-                .orElseThrow(() -> new IdNotFound("ID Inexistente"));
-        entity.setNomePlano(planoDTO.getNomePlano());
-        entity.setValor(planoDTO.getValor());
 
-        Plano dto = planoRepository.save(entity);
-        planoDTO.setCodigoPlano(dto.getCodigoPlano());
+        try {
+            Plano entity = planoRepository.findById(codigoPlano).get();
+            entity.setNomePlano(planoDTO.getNomePlano());
+            entity.setValor(planoDTO.getValor());
+
+            Plano dto = planoRepository.save(entity);
+            planoDTO.setCodigoPlano(dto.getCodigoPlano());
+
+        }catch (RuntimeException ex){
+            throw new IdNotFound("ID Inexistente");
+        }
+
         return planoDTO;
     }
 
     public Plano getIdPlano(Long codigoPlano){
-        return planoRepository.findById(codigoPlano).orElseThrow(
-                ()-> new IdNotFound("ID não encontrado"));
+
+        try {
+            return planoRepository.findById(codigoPlano).get();
+
+        }catch (Exception e){
+            throw new IdNotFound("ID Inexistente");
+        }
+
     }
 
     public void delete(Long codigoPlano){
-        if (planoRepository.existsById(codigoPlano)){
+        try {
             planoRepository.deleteById(codigoPlano);
-        }else {
-            throw new DataIntegrityViolationException("ERRO");
+        }catch (RuntimeException ex) {
+            throw new IdNotFound("ID não encontrado");
         }
     }
 
