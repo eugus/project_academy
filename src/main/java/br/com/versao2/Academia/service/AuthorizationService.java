@@ -20,7 +20,6 @@ public class AuthorizationService implements UserDetailsService {
     public AuthorizationService(AlunoRepository alunoRepository, AlunoService alunoService) {
         this.alunoRepository = alunoRepository;
         this.alunoService = alunoService;
-
     }
 
     @Override
@@ -36,7 +35,7 @@ public class AuthorizationService implements UserDetailsService {
 
         AlunoDTO newAlunoDto = new AlunoDTO(dto.getIdAluno(), dto.getNome(),
                 dto.getDataCadastro(), dto.getCpf(), dto.getTelefone(),
-                dto.getEndereco(), encryptedPassword,dto.getRole(), dto.getCodigoPlano());
+                dto.getEndereco(), encryptedPassword, dto.getRole(), dto.getCodigoPlano(), dto.getAltura(), dto.getPeso());
 
         alunoService.criarAluno(newAlunoDto);
     }
@@ -49,7 +48,7 @@ public class AuthorizationService implements UserDetailsService {
 
         AlunoDTO newAlunoDto = new AlunoDTO(dto.getIdAluno(), dto.getNome(),
                 dto.getDataCadastro(), dto.getCpf(), dto.getTelefone(),
-                dto.getEndereco(), encryptedPassword,dto.getRole(), dto.getCodigoPlano());
+                dto.getEndereco(), encryptedPassword, dto.getRole(), dto.getCodigoPlano(), dto.getAltura(), dto.getPeso());
 
          alunoService.criaUsuarioStandard(newAlunoDto);
     }

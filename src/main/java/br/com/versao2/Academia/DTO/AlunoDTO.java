@@ -28,6 +28,10 @@ public class AlunoDTO {
 
     private Long codigoPlano;
 
+    private Double altura;
+
+    private Double peso;
+
     public AlunoDTO() {
     }
 
@@ -39,11 +43,13 @@ public class AlunoDTO {
         telefone = aluno.getTelefone();
         endereco = aluno.getEndereco();
         password = aluno.getPassword();
+        altura = aluno.getAltura();
+        peso = aluno.getPeso();
         role = aluno.getRole();
         codigoPlano = aluno.getPlano().getCodigoPlano();
     }
 
-    public AlunoDTO(Long idAluno, String nome, String dataCadastro, String cpf, String telefone, String endereco, String encryptedPassword, UserRole role, Long codigoPlano) {
+    public AlunoDTO(Long idAluno, String nome, String dataCadastro, String cpf, String telefone, String endereco, String encryptedPassword,  UserRole role, Long codigoPlano, Double altura, Double peso) {
         this.idAluno = idAluno;
         this.nome = nome;
         this.dataCadastro = dataCadastro;
@@ -53,6 +59,8 @@ public class AlunoDTO {
         this.password = encryptedPassword;
         this.role = role;
         this.codigoPlano = codigoPlano;
+        this.altura = altura;
+        this.peso = peso;
     }
 
     public Long getIdAluno() {
@@ -125,6 +133,24 @@ public class AlunoDTO {
 
     public void setCodigoPlano(Long codigoPlano) {
         this.codigoPlano = codigoPlano;
+    }
+
+
+    public Double getAltura() {
+        return altura;
+    }
+
+    public void setAltura( Double altura) {
+        this.altura = altura;
+    }
+
+
+    public Double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(Double peso) {
+        this.peso = peso;
     }
 
     public String dataAtual(){

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/aluno")
@@ -63,6 +64,12 @@ public class AlunoController {
     public ResponseEntity<Page<Aluno>> getAlunoPage(Pageable pageable){
         Page<Aluno> page = alunoService.getPage(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(page);
+    }
+
+    @GetMapping("/{id}/imc")
+    public ResponseEntity<?> IMC(@PathVariable Long id){
+        Map<String, Object> imc = alunoService.calcIMC2( id);
+        return ResponseEntity.status(HttpStatus.OK).body(imc);
     }
 
 

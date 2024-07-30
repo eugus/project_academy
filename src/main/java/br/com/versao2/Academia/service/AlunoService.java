@@ -12,7 +12,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -42,6 +46,8 @@ public class AlunoService {
             entity.setEndereco(alunoDto.getEndereco());
             entity.setPassword(alunoDto.getPassword());
             entity.setRole(alunoDto.getRole());
+            entity.setAltura(alunoDto.getAltura());
+            entity.setPeso(alunoDto.getPeso());
 
             Aluno dto = alunoRepository.save(entity);
             alunoDto.setIdAluno(dto.getIdAluno());
@@ -62,6 +68,8 @@ public class AlunoService {
         entity.setEndereco(alunoDto.getEndereco());
         entity.setPassword(alunoDto.getPassword());
         entity.setRole(alunoDto.getRole());
+        entity.setAltura(alunoDto.getAltura());
+        entity.setPeso(alunoDto.getPeso());
 
 
         Plano plano = new Plano();
@@ -95,7 +103,6 @@ public class AlunoService {
             entity.setPassword(encryptedPassword);
             alunoDTO.setDataCadastro(alunoDTO.getDataCadastro());
 
-
             Plano plano = new Plano();
             plano.setCodigoPlano(alunoDTO.getCodigoPlano());
             entity.setPlano(plano);
@@ -105,16 +112,12 @@ public class AlunoService {
         }catch (RuntimeException e){
             throw new IdNotFound("ID Inexsitente ou não corresponde a esse CPF");
         }
-
-
-
         return alunoDTO;
     }
 
 
     public Aluno getId(Long idAluno) {
         try {
-
             return alunoRepository.findById(idAluno).get();
 
         } catch (Exception e) {
@@ -133,6 +136,25 @@ public class AlunoService {
             throw new IdNotFound("ID não encotrado");
         }
     }
+
+
+    public Map<String, Object> calcIMC2(Long id) {
+        Aluno entity = alunoRepository.findById(id).orElseThrow(() ->
+                new IdNotFound("Aluno não encontrado"));
+
+        double imc = entity.getPeso() / Math.pow(entity.getAltura(), 2);
+
+        BigDecimal bd = new BigDecimal(imc);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        double roundedImc = bd.doubleValue();
+
+        Map<String, Object> resultado = new HashMap<>();
+        resultado.put("nome", entity.getNome());
+        resultado.put("imc", roundedImc);
+
+        return resultado;
+    }
+
 
     public Page<Aluno> getPage(Pageable pageable){
         return alunoRepository.findAll(pageable);

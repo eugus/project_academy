@@ -2,12 +2,15 @@ package br.com.versao2.Academia.controller;
 
 import br.com.versao2.Academia.DTO.AlunoDTO;
 import br.com.versao2.Academia.DTO.AuthenticationDTO;
+
+import br.com.versao2.Academia.DTO.CreateEvent;
 import br.com.versao2.Academia.DTO.LoginResponseDTO;
 import br.com.versao2.Academia.entitys.Aluno;
 import br.com.versao2.Academia.infra.security.TokenService;
 import br.com.versao2.Academia.service.AlunoService;
 import br.com.versao2.Academia.service.AuthorizationService;
 import jakarta.validation.Valid;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,12 +36,14 @@ public class AuthenticationController {
     AuthenticationManager authenticationManager;
     final
     TokenService service;
+    final
+    RabbitTemplate rabbitTemplate;
 
-    public AuthenticationController(AlunoService alunoService , AuthorizationService authorizationService, AuthenticationManager authenticationManager, TokenService service) {
+    public AuthenticationController(AlunoService alunoService , AuthorizationService authorizationService, AuthenticationManager authenticationManager, TokenService service, RabbitTemplate rabbitTemplate) {
         this.alunoService = alunoService;
         this.authenticationManager = authenticationManager;
         this.service = service;
-
+        this.rabbitTemplate = rabbitTemplate;
         this.authorizationService = authorizationService;
     }
 
@@ -69,6 +74,11 @@ public class AuthenticationController {
     public ResponseEntity<?> register(@RequestBody @Valid AlunoDTO dto){
 
         authorizationService.register(dto);
+        String routingKey = "order.v1.order-created";
+        //Message message = new Message(dto.getCpf().getBytes());
+        CreateEvent event = new CreateEvent(dto.getIdAluno(), dto.getNome(), dto.getCpf());
+
+        rabbitTemplate.convertAndSend(routingKey, event);
 
         return ResponseEntity.ok().body("Aluno criado com sucesso! Seja bem-vindo, " + dto.getNome());
     }

@@ -23,6 +23,8 @@ public class Aluno implements UserDetails {
     private String telefone;
     private String endereco;
     private String password;
+    private Double altura;
+    private Double peso;
     public UserRole role;
 
     @ManyToOne
@@ -32,7 +34,7 @@ public class Aluno implements UserDetails {
     public Aluno() {
     }
 
-    public Aluno(Long idAluno, String nome, String encryptedPassword, UserRole role, String cpf,String dataCadastro, String telefone, String endereco, Plano plano) {
+    public Aluno(Long idAluno, String nome, String encryptedPassword, UserRole role, String cpf,String dataCadastro, String telefone, String endereco, Double altura, Double peso, Plano plano) {
         this.idAluno = idAluno;
         this.nome = nome;
         this.cpf = cpf;
@@ -41,6 +43,8 @@ public class Aluno implements UserDetails {
         this.dataCadastro = dataCadastro;
         this.role = role;
         this.telefone = telefone;
+        this.altura = altura;
+        this.peso = peso;
         this.plano = plano;
     }
 
@@ -61,6 +65,8 @@ public class Aluno implements UserDetails {
         if (this.role == UserRole.ADMIN) return List.of( new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_ALUNO"));
         else return List.of(new SimpleGrantedAuthority("ROLE_ALUNO"));
     }
+
+    
 
     @Override
     public String getPassword() {
@@ -156,6 +162,22 @@ public class Aluno implements UserDetails {
 
     public void setDataCadastro(String dataCadastro) {
         this.dataCadastro = dataCadastro;
+    }
+
+    public Double getAltura() {
+        return altura;
+    }
+
+    public void setAltura(Double altura) {
+        this.altura = altura;
+    }
+
+    public Double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(Double peso) {
+        this.peso = peso;
     }
 
     @Override

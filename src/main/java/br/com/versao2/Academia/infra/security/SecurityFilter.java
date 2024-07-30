@@ -9,6 +9,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -41,21 +42,30 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull  HttpServletRequest request, @NonNull HttpServletResponse response,@NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        var token = recoverToken(request);
-        if (token != null) {
-            var login = service.validateToken(token);
-            UserDetails aluno = repository.findByCpf(login);
-            System.out.println("sdada");
+        try {
 
-            var authentication = new UsernamePasswordAuthenticationToken(aluno, null, aluno.getAuthorities());
+            var token = recoverToken(request);
+            if (token != null) {
+                var login = service.validateToken(token);
+                UserDetails aluno = repository.findByCpf(login);
+                System.out.println("sdada");
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                var authentication = new UsernamePasswordAuthenticationToken(aluno, null, aluno.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             /*
             contexto de segurança do spring security, cada componente do spring vai alimentando esse
             security context holder pra ele saber oq ele ja validou ou não,
              salvar as informações do usuário que já tiver autenticado
              */
 
+            }else {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            }
+        }catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            SecurityContextHolder.clearContext();
         }
         filterChain.doFilter(request, response);
     }
